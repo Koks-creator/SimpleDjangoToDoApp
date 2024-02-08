@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Create New List
+{% endblock %}
+
+
+{% block content %}
+<div align="center" style="margin-top: 100px;">
+	<h1>Create new list</h1>
+	<hr style="width:40%">
+	<div style="width:50%;background-color:#669bbc;min=-height:500px;border-radius:10px;padding: 25px;">
+		<form method="post" action="/create/" class="form-group">
+			{% csrf_token %}
+			<p style="font-size: 20px;">{{ form.name.label }}</p>
+			{{form.name}}
+			<br>
+			<br>
+			<button name="save" type="submit" class="btn btn-secondary" style="width: 30%;height: 50px;">Create</button>
+
+		</form>
+		<br>
+		Yeah...nothing fancy here...
+	</div>
+</div>
+{% endblock %}

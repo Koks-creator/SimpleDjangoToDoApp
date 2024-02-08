@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}My lists{% endblock %}
+
+{% block content %}
+    <div align="center" style="margin-top: 100px;">
+        <h1>My ToDo lists</h1>
+        <hr style="width:40%">
+        <div style="width:60%;background-color:#669bbc;min-height:700px;border-radius:10px;padding: 25px;">
+            {% if not user.todolist.all %}
+                <h2>You have no lists yet, you can create them <a href="/create">here</a></h2>
+            {% else %}
+                {% for td in user.todolist.all %}
+                    <div class="accordion" id="accordionExample">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ td.id }}" aria-expanded="true" aria-controls="collapseOne">
+                            {{ td.name }} ({{ td.item_set.all | length }} tasks)
+                          </button>
+                        </h2>
+                        <div id="collapse{{ td.id }}" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                          <div class="accordion-body" style="text-align: left;">
+                              <a href="/list/{{ td.id }}"><button type="button" class="btn btn-secondary">Edit list</button></a>
+
+                              <br>
+                              <br>
+                              <div style="overflow: auto;max-height:500px;">
+                                  {% if td.item_set.all %}
+                                      {% for it in td.item_set.all %}
+                                        <div style="padding: 10px;border-radius:5px;background-color:#a8dadc;">
+                                            <strong>Created: {{ it.creation_date }}</strong>
+                                            <br>
+                                            <strong>Due date: {{ it.end_date }}</strong>
+                                            <br>
+                                            {% if it.completed == True %}
+                                                <strong>Completed:</strong> <input class="form-check-input" type="checkbox" value="clicked" name="c{{it.id}}" checked disabled>
+                                            {% else %}
+                                                <strong>Completed:</strong> <input class="form-check-input" type="checkbox" value="clicked" name="c{{it.id}}" disabled>
+                                            {% endif %}
+                                            <br>
+                                            <br>
+                                            <p>{{ it.text }}</p>
+                                        </div>
+                                        <br>
+                                      {% endfor %}
+                                  {% endif %}
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
